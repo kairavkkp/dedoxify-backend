@@ -1,0 +1,6 @@
+CREATE TABLE family (
+    id SERIAL PRIMARY KEY,
+    uuid UUID NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    isActive BOOLEAN NOT NULL DEFAULT TRUE
+);
