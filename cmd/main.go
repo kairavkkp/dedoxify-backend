@@ -7,6 +7,8 @@ import (
 	"net/http"
 	"os"
 
+	_ "github.com/lib/pq" // PostgreSQL driver
+
 	"github.com/go-chi/chi/v5"
 	"github.com/joho/godotenv"
 )
