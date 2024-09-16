@@ -1,0 +1,31 @@
+name: Apply Migrations
+
+on:
+  push:
+    branches:
+      - prod
+
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: "1.20"
+
+      - name: Install golang-migrate
+        run: |
+          wget https://github.com/golang-migrate/migrate/releases/download/v4.15.2/migrate.linux-amd64.tar.gz
+          tar -xzf migrate.linux-amd64.tar.gz
+          sudo mv migrate /usr/local/bin
+
+      - name: Load environment variables
+        run: echo "DB_URL=${{ secrets.NEON_DB_URL }}" >> $GITHUB_ENV
+
+      - name: Apply migrations
+        run: migrate -database "${DB_URL}" -path db/migrations up
