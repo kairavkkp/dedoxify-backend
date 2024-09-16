@@ -1,14 +1,14 @@
 package main
 
 import (
+	"database/sql"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/joho/godotenv"
-	"gorm.io/driver/postgres"
-	"gorm.io/gorm"
 )
 
 func main() {
@@ -21,18 +21,30 @@ func main() {
 	dbUser := os.Getenv("DB_USER")
 	dbPassword := os.Getenv("DB_PASSWORD")
 	dbName := os.Getenv("DB_NAME")
-	dbPort := os.Getenv("DB_PORT")
 	dbSsl := os.Getenv("DB_SSL")
 	backendPort := os.Getenv("BACKEND_PORT")
 
-	// Connection String
-	dsn := "host=" + dbHost + " user=" + dbUser + " password=" + dbPassword + " dbname=" + dbName + " port=" + dbPort + " sslmode=" + dbSsl
-
-	// Init Database
-	_, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	connStr := "postgresql://" + dbUser + ":" + dbPassword + "@" + dbHost + "/" + dbName + "?sslmode=" + dbSsl
+	db, err := sql.Open("postgres", connStr)
 	if err != nil {
-		log.Fatal("failed to connect Database: ", err)
+		log.Fatal(err)
 	}
+	defer db.Close()
+
+	rows, err := db.Query("select version()")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer rows.Close()
+
+	var version string
+	for rows.Next() {
+		err := rows.Scan(&version)
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
+	fmt.Printf("version=%s\n", version)
 
 	// Setup a Router
 	r := chi.NewRouter()
@@ -45,4 +57,3 @@ func main() {
 	log.Println("Starting Server on :", backendPort)
 	http.ListenAndServe(":"+backendPort, r)
 }
-
