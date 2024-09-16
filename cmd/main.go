@@ -10,13 +10,9 @@ import (
 	_ "github.com/lib/pq" // PostgreSQL driver
 
 	"github.com/go-chi/chi/v5"
-	"github.com/joho/godotenv"
 )
 
 func main() {
-	if err := godotenv.Load(); err != nil {
-		log.Fatal("Error loading .env file")
-	}
 
 	// Get DB Vars
 	dbHost := os.Getenv("DB_HOST")
