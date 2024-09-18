@@ -6,7 +6,10 @@ import (
 	"net/http"
 )
 
-// RootHandler is a temporary handler that responds with "Hello, World!"
-func RootHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Dedoxify Backend!")
+func PublicRootHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "Public: Dedoxify Backend!")
+}
+
+func PrivateRootHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "Private: Dedoxify Backend!")
 }

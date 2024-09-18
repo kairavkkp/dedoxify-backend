@@ -9,11 +9,10 @@ import (
 )
 
 // SetupRouter initializes and returns the Chi router
-func SetupRouter() http.Handler {
+func PrivateRouter() http.Handler {
 	r := chi.NewRouter()
-
-	// Define your routes
-	r.Get("/", handlers.RootHandler) // Temporary root handler
+	// r.Use(middleware.APIKeyAuth)
+	r.Get("/", handlers.PrivateRootHandler)
 
 	return r
 }

@@ -1,0 +1,35 @@
+name: Run Tests on PR
+
+on:
+  pull_request:
+    branches:
+      - development
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: "1.22.0"
+
+      - name: Install dependencies
+        run: go mod download
+
+      - name: Run Go tests
+        run: go test ./handlers -v
+
+      - name: Run Go tests with coverage
+        run: go test -coverprofile=coverage.out ./handlers
+
+      - name: Upload coverage report
+        if: success()
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage-report
+          path: coverage.out
