@@ -7,9 +7,8 @@ import (
 	"net/http"
 	"os"
 
-	_ "github.com/lib/pq" // PostgreSQL driver
-
-	"github.com/go-chi/chi/v5"
+	"github.com/kairavkkp/dedoxify-backend/routes"
+	_ "github.com/lib/pq"
 )
 
 func main() {
@@ -44,14 +43,9 @@ func main() {
 	}
 	fmt.Printf("version=%s\n", version)
 
-	// Setup a Router
-	r := chi.NewRouter()
-
 	// Routes
-	r.Get("/", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("Hello World!"))
-	})
+	router := routes.SetupRouter()
 
 	log.Println("Starting Server on :", backendPort)
-	http.ListenAndServe(":"+backendPort, r)
+	http.ListenAndServe(":"+backendPort, router)
 }
