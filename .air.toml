@@ -1,0 +1,23 @@
+# .air.toml
+
+# Configures what directories/files to watch for changes
+[dirs]
+watch = [
+  "./cmd",
+  "./handlers",
+  "./routes",
+  "./middleware"
+]
+
+# Files to exclude from being watched
+[exclude]
+watch = [
+  "db/migrations",
+  "README.md",
+  ".git/**"
+]
+
+# Command to run the app
+[build]
+cmd = "go build -o ./tmp/main ./cmd/main.go"
+bin = "tmp/main"
