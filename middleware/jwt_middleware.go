@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"strings"
 
 	"github.com/golang-jwt/jwt/v5"
@@ -13,14 +14,14 @@ import (
 
 // Define the Cognito details
 const (
-	Region     = "ap-south-1"
-	UserPoolID = "ap-south-1_VOtG3qDHB"
 	CognitoURL = "https://cognito-idp.%s.amazonaws.com/%s/.well-known/jwks.json"
 	Issuer     = "https://cognito-idp.%s.amazonaws.com/%s"
 )
 
 // JWTAuth middleware for AWS Cognito
 func JWTAuth(next http.Handler) http.Handler {
+	Region := os.Getenv("COGNITO_REGION")
+	UserPoolID := os.Getenv("COGNITO_USER_POOL_ID")
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		// Get the token from the Authorization header
 		authHeader := r.Header.Get("Authorization")
