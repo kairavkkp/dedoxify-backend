@@ -11,8 +11,8 @@ type Family struct {
 	UUID      uuid.UUID `gorm:"type:uuid;not null"`
 	Name      string    `gorm:"size:255;not null"`
 	IsActive  bool      `gorm:"not null;default:true"`
-	CreatedAt time.Time
-	UpdatedAt time.Time
+	CreatedAt time.Time `gorm:"column:created_at"`
+	UpdatedAt time.Time `gorm:"column:updated_at"`
 }
 
 func (Family) TableName() string {

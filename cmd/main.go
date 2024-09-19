@@ -1,8 +1,6 @@
 package main
 
 import (
-	"database/sql"
-	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -11,6 +9,8 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/kairavkkp/dedoxify-backend/routes"
 	_ "github.com/lib/pq"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
 )
 
 func main() {
@@ -23,27 +23,26 @@ func main() {
 	dbSsl := os.Getenv("DB_SSL")
 	backendPort := os.Getenv("BACKEND_PORT")
 
-	connStr := "postgresql://" + dbUser + ":" + dbPassword + "@" + dbHost + "/" + dbName + "?sslmode=" + dbSsl
-	db, err := sql.Open("postgres", connStr)
+	dsn := "host=" + dbHost + " user=" + dbUser + " password=" + dbPassword + " dbname=" + dbName + " sslmode=" + dbSsl
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer db.Close()
+	log.Println("Database connection established successfully!")
 
-	rows, err := db.Query("select version()")
+	// Test the connection with a simple query
+	sqlDB, err := db.DB() // Get the underlying *sql.DB to test
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("Failed to get underlying database connection:", err)
 	}
-	defer rows.Close()
 
-	var version string
-	for rows.Next() {
-		err := rows.Scan(&version)
-		if err != nil {
-			log.Fatal(err)
-		}
+	err = sqlDB.Ping() // Check if the connection is alive
+	if err != nil {
+		log.Fatal("Database connection is not active:", err)
 	}
-	fmt.Printf("version=%s\n", version)
+
+	// Log statement after confirming connection
+	log.Println("Database connection is alive and active!")
 
 	// Routes
 	r := chi.NewRouter()
