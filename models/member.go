@@ -8,7 +8,7 @@ import (
 
 type Member struct {
 	ID        uint      `gorm:"primaryKey"`
-	UUID      uuid.UUID `gorm:"type:uuid;not null"`
+	UUID      uuid.UUID `gorm:"type:uuid;not null;unique"`
 	FirstName string    `gorm:"size:255"`
 	LastName  string    `gorm:"size:255"`
 	Email     string    `gorm:"size:255;unique;not null"`

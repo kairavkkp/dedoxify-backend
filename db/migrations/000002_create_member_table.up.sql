@@ -1,6 +1,6 @@
 CREATE TABLE member (
     id SERIAL PRIMARY KEY,
-    uuid UUID NOT NULL,
+    uuid UUID NOT NULL UNIQUE,
     first_name VARCHAR(255) NULL,
     last_name VARCHAR(255) NULL,
     email VARCHAR(255) UNIQUE NOT NULL,

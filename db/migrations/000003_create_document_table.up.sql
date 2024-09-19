@@ -1,6 +1,6 @@
 CREATE TABLE document (
     id SERIAL PRIMARY KEY,
-    uuid UUID NOT NULL,
+    uuid UUID NOT NULL UNIQUE,
     family_id INTEGER REFERENCES family(id) ON DELETE
     SET
         NULL,

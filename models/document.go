@@ -8,7 +8,7 @@ import (
 
 type Document struct {
 	ID               uint      `gorm:"primaryKey"`
-	UUID             uuid.UUID `gorm:"type:uuid;not null"`
+	UUID             uuid.UUID `gorm:"type:uuid;not null;unique"`
 	FamilyID         uint      `gorm:"index"`
 	Family           Family    `gorm:"foreignKey:FamilyID;constraint:OnDelete:SET NULL;"`
 	MemberID         uint      `gorm:"index"`
