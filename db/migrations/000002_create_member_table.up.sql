@@ -1,11 +1,13 @@
 CREATE TABLE member (
     id SERIAL PRIMARY KEY,
-    uuid UUID NOT NULL,
-    firstName VARCHAR(255) NULL,
-    lastName VARCHAR(255) NULL,
+    uuid UUID NOT NULL UNIQUE,
+    first_name VARCHAR(255) NULL,
+    last_name VARCHAR(255) NULL,
     email VARCHAR(255) UNIQUE NOT NULL,
-    familyId INTEGER REFERENCES family(id) ON DELETE
+    family_id INTEGER REFERENCES family(id) ON DELETE
     SET
         NULL,
-        isActive BOOLEAN NOT NULL DEFAULT TRUE
+        is_active BOOLEAN NOT NULL DEFAULT TRUE,
+        created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+        updated_at TIMESTAMP NOT NULL DEFAULT NOW()
 );

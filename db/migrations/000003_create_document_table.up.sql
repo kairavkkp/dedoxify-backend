@@ -1,14 +1,16 @@
 CREATE TABLE document (
     id SERIAL PRIMARY KEY,
-    uuid UUID NOT NULL,
-    familyId INTEGER REFERENCES family(id) ON DELETE
+    uuid UUID NOT NULL UNIQUE,
+    family_id INTEGER REFERENCES family(id) ON DELETE
     SET
         NULL,
-        memberId INTEGER REFERENCES member(id) ON DELETE
+        member_id INTEGER REFERENCES member(id) ON DELETE
     SET
         NULL,
         category VARCHAR(100) NOT NULL,
-        isThumbnailReady BOOLEAN NOT NULL DEFAULT FALSE,
-        isProcessed BOOLEAN NOT NULL DEFAULT FALSE,
-        isActive BOOLEAN NOT NULL DEFAULT TRUE
+        is_thumbnail_ready BOOLEAN NOT NULL DEFAULT FALSE,
+        is_processed BOOLEAN NOT NULL DEFAULT FALSE,
+        is_active BOOLEAN NOT NULL DEFAULT TRUE,
+        created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+        updated_at TIMESTAMP NOT NULL DEFAULT NOW()
 );
